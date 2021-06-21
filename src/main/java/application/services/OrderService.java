@@ -28,6 +28,7 @@ public class OrderService {
 		
 		Notification info = LockerService.getUserInstance().useLockerService(o, city);
 		PickupAgent agent = AgentService.findPickupAgent(city);
+		agent.engage();
 		messageService.notify(agent.id(), info);
 		
 	}
