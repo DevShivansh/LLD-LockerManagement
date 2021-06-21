@@ -21,6 +21,7 @@ public class LockerService implements LockerAdminPrevilage, LockerUserPrevilage{
 		return adminLockerService;
 	}
 	
+	@Override
 	public Notification useLockerService(Order o, String city) {
 		
 		LockerRoom room = LockerRepository.findAnyLockerRoomByCity(city);
@@ -28,7 +29,8 @@ public class LockerService implements LockerAdminPrevilage, LockerUserPrevilage{
 		return info;
 		
 	}
-	
+
+	@Override
 	public Order vacantLocker(Notification info) {
 		
 		LockerRoom room = LockerRepository.findLockerByRoomId(info.getLockerRoomId());
@@ -41,6 +43,7 @@ public class LockerService implements LockerAdminPrevilage, LockerUserPrevilage{
 	public void vacantLocker(String roomId, String lockerId) {
 		
 		LockerRoom room = LockerRepository.findLockerByRoomId(roomId);
+		room.clearLocker(lockerId);
 	}
 	
 }
