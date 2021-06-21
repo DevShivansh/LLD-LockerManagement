@@ -41,4 +41,10 @@ public class LockerRoom {
 		 throw new RuntimeException("Invalid LockerId"); 
 	}
 	
+	public void clearLocker(String lockerId){
+		if(!lockerMap.containsKey(lockerId))
+			throw new RuntimeException("Invalid lockerId, not locker found!");
+		lockerMap.get(lockerId).clearLocker();
+	}
+	
 }
