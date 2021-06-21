@@ -12,6 +12,7 @@ public class Locker {
 	
 	private Order currentOrder;
 	
+	private LocalDateTime lockedTime;
 	
 	public boolean isVacant() {
 		return currentOrder == null;
@@ -22,9 +23,22 @@ public class Locker {
 		if(!verificationCode.equals(otp))
 			throw new RuntimeException("OTP not valid");
 		Order o = currentOrder;
+		invalidateCurrentOrder();
+		return o;
+	}
+
+	private void invalidateCurrentOrder(){
 		currentOrder = null;
 		verificationCode = null;
-		return o;
+	}
+
+	public void clearLocker(){
+
+		if(!LocalDateTime.now().minusDays(3).isAfter(lockedTime))
+			throw new RuntimeException("Locker cannot be cleared before 3 days");
+
+		invalidateCurrentOrder();
+
 	}
 
 	
@@ -37,6 +51,7 @@ public class Locker {
 		this.currentOrder = o;
 		this.currentOrder.updateState(OrderStatus.DELIVERED);
 		this.verificationCode = OTPService.generateOTP();
+		lockedTime = LocalDateTime.now();
 		Notification info = new Notification(lockerId, o.orderId(), o.getUserId(), verificationCode);
 		return info;
 	}
